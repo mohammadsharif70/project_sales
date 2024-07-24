@@ -1,0 +1,22 @@
+
+
+<main class="main" *ngIf="!routerActive">
+  <div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+      <h2 class="lead">Welcome to </h2>
+      <h1 class="display-4">{{title}}</h1>
+      <button
+      (click)="openLogin()"
+      class="btn btn-secondary mt-3">Please click to continue ...</button>
+    </div>
+  </div>
+</main>
+
+
+<router-outlet />
+
+<footer class="footer mt-auto py-3 bg-light">
+  <div class="container text-center">
+    <span class="text-muted">Developed by Mohammad Hossien Maghami Sharif</span>
+  </div>
+</footer>

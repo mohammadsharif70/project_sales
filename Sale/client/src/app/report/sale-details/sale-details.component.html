@@ -1,0 +1,79 @@
+<div class="container mt-5">
+  <h2 class="text-center">User Sales Report</h2>
+
+  <form #filterForm="ngForm" (ngSubmit)="onFilterChange(filterForm)">
+    <div class="form-group">
+      <label for="year">Select Year</label>
+      <select class="form-control" id="year" name="year" ngModel required>
+        <option *ngFor="let year of [2021, 2022, 2023, 2024]" [value]="year">{{ year }}</option>
+      </select>
+    </div>
+    <div class="form-group mt-3">
+      <label for="month">Select Month</label>
+      <select class="form-control" id="month" name="month" ngModel required>
+        <option *ngFor="let month of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]" [value]="month">{{ getMonthName(month) }}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Get Report</button>
+    <button routerLink="/transactions" style="float: right;" class="btn btn-secondary mt-3">Back</button>
+  </form>
+
+  <table *ngIf="userSalesDetails.length" class="table mt-5">
+    <thead>
+      <tr>
+        <th>User ID</th>
+        <th>User Name</th>
+        <th>User Role</th>
+        <th>Reporting Manager</th>
+        <th>Sales Count</th>
+        <th>Total Amount</th>
+        <th>Details</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let details of userSalesDetails">
+        <tr>
+          <td>{{ details.UserID }}</td>
+          <td>{{ details.UserName }}</td>
+          <td>{{ details.UserRole }}</td>
+          <td>{{ details.ReportingManager }}</td>
+          <td>{{ details.SalesCount }}</td>
+          <td>{{ details.TotalAmount | currency }}</td>
+          <td>
+            <button class="btn btn-info btn-sm" (click)="toggleExpand(details.UserID)">
+              {{ expandedUser === details.UserID ? 'Hide' : 'Show' }} Transactions
+            </button>
+          </td>
+        </tr>
+        <tr *ngIf="expandedUser === details.UserID">
+          <td colspan="7">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Transaction ID</th>
+                  <th>Sales Item</th>
+                  <th>Sales Date</th>
+                  <th>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let transaction of userTransactions[details.UserID]">
+                  <td>{{ transaction.TransactionID }}</td>
+                  <td>{{ transaction.SalesItem }}</td>
+                  <td>{{ transaction.SalesDate | date: 'short' }}</td>
+                  <td>{{ transaction.Amount | currency }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </td>
+        </tr>
+      </ng-container>
+      <tr>
+        <td colspan="4"><strong>Total</strong></td>
+        <td><strong>{{ totalSalesCount }}</strong></td>
+        <td><strong>{{ totalAmount | currency }}</strong></td>
+        <td></td>
+      </tr>
+    </tbody>
+  </table>
+</div>

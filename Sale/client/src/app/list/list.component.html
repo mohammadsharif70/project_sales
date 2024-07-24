@@ -1,0 +1,76 @@
+<div class="container mt-5">
+  <h2 class="text-center">Transactions</h2>
+
+  <form *ngIf="!selectedTransaction" #transactionForm="ngForm" (ngSubmit)="onAddTransaction(transactionForm)">
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="SalesItem">Sales Item</label>
+        <input type="text" class="form-control" id="SalesItem" name="SalesItem" ngModel required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="SalesDate">Sales Date</label>
+        <input type="date" class="form-control" id="SalesDate" name="SalesDate" ngModel required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="UserID">User ID</label>
+        <input type="number" class="form-control" id="UserID" name="UserID" ngModel required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="Amount">Amount</label>
+        <input type="number" class="form-control" id="Amount" name="Amount" ngModel required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Add Transaction</button>
+    <button routerLink="/report"  style="float: right;" class="btn btn-outline-info  mt-3">Yearly Sales Report</button>
+    <button routerLink="/sale-details"  style="float: right;" class="btn btn-outline-success mr-2 mt-3">Sales Detailed Report</button>
+  </form>
+
+  <form *ngIf="selectedTransaction" #updateForm="ngForm" (ngSubmit)="onUpdateTransaction(updateForm)">
+    <div class="form-row">
+      <div class="form-group col-md-3">
+        <label for="SalesItem">Sales Item</label>
+        <input type="text" class="form-control" id="SalesItem" name="SalesItem" [(ngModel)]="selectedTransaction.SalesItem" required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="SalesDate">Sales Date</label>
+        <input type="date" class="form-control" id="SalesDate" name="SalesDate" [(ngModel)]="selectedTransaction.SalesDate.getUTCDate" required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="UserID">User ID</label>
+        <input type="number" class="form-control" id="UserID" name="UserID" [(ngModel)]="selectedTransaction.UserID" required>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="Amount">Amount</label>
+        <input type="number" class="form-control" id="Amount" name="Amount" [(ngModel)]="selectedTransaction.Amount" required>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Update Transaction</button>
+    <button type="button" class="btn btn-secondary mt-3 ml-2" (click)="onCancelEdit()">Cancel</button>
+  </form>
+
+  <table class="table mt-5">
+    <thead>
+      <tr>
+        <th>Transaction ID</th>
+        <th>Sales Item</th>
+        <th>Sales Date</th>
+        <th>User ID</th>
+        <th>Amount</th>
+        <th>Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let transaction of transactions">
+        <td>{{ transaction.TransactionID }}</td>
+        <td>{{ transaction.SalesItem }}</td>
+        <td>{{ transaction.SalesDate | date }}</td>
+        <td>{{ transaction.UserID }}</td>
+        <td>{{ transaction.Amount }}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" (click)="onSelectTransaction(transaction)">Edit</button>
+          <button class="btn btn-danger btn-sm ml-2" (click)="onDeleteTransaction(transaction.TransactionID)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

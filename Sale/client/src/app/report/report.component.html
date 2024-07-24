@@ -1,0 +1,36 @@
+<div class="container mt-5">
+  <h2 class="text-center">Sales Report</h2>
+
+  <form #yearForm="ngForm" (ngSubmit)="onYearChange(yearForm)">
+    <div class="form-group">
+      <label for="year">Please Select The Year</label>
+      <select class="form-control" id="year" name="year" ngModel required>
+        <option *ngFor="let year of [2021, 2022, 2023, 2024 , 2025 , 2026]" [value]="year">{{ year }}</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary mt-3">Get Report</button>
+    <button routerLink="/transactions" style="float: right;" class="btn btn-secondary mt-3">Back</button>
+  </form>
+
+  <table *ngIf="salesSummaries.length" class="table mt-5">
+    <thead>
+      <tr>
+        <th>Month</th>
+        <th>Sales Count</th>
+        <th>Total Amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let summary of salesSummaries">
+        <td>{{ getMonthName(summary.Month) }}</td>
+        <td>{{ summary.SalesCount }}</td>
+        <td>{{ summary.TotalAmount | currency }}</td>
+      </tr>
+      <tr>
+        <td><strong>Total</strong></td>
+        <td><strong>{{ totalSalesCount }}</strong></td>
+        <td><strong>{{ totalAmount | currency }}</strong></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
